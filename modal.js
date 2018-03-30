@@ -5,24 +5,58 @@
 	if (!gtris.ui) gtris.ui = window.gtris.ui = {};
 
 	var modal = {
-		modal_window: 'modal_window',
+
+		ESC_KEY_CLICK: 'esc_key_click',
+		CLOSE_BUTTON_CLICK: 'close_button_click',
+		clonedModal: 'cloned_modal',
 
 		open: function(obj) {
-			this.modal_window = document.querySelector(obj.target);
-			this.modal_window.style.display = 'block';
 
-			var gtModalWrapper = document.createElement("div");
-			gtModalWrapper.classList.add('gt-modal-wrap');
-			document.body.appendChild(gtModalWrapper);
+			let self = this;
 
-			gtModalWrapper.appendChild(this.modal_window);
+			//append gt-modal-wrap
+			let modalWrap = document.createElement("div");
+			modalWrap.classList.add('gt-modal-wrap');
+			document.body.appendChild(modalWrap);
+
+			if(document.querySelector(obj.target)) {
+				let modalWindow = document.querySelector(obj.target);
+				modalWrap.appendChild(modalWindow);
+				modalWindow.style.display = 'block';
+				modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', this.handleUpdate, false);
+
+				//modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', this.handleUpdate(modalWrap), true);
+
+				// modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', function() {
+				// 	self.handleUpdate(modalWrap, self.CLOSE_BUTTON_CLICK);
+				// }, false);
+				this.clonedModal = modalWindow.cloneNode(true);
+			}else{
+				modalWrap.appendChild(this.clonedModal);
+				modalWrap.querySelector('.gt-modal').style.display = 'block';
+				modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', this.handleUpdate, false);
+				// modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', function() {
+				// 	self.handleUpdate(modalWrap, self.CLOSE_BUTTON_CLICK);
+				// }, false);
+			}
 		},
-		close: function() {
-			this.modal_window.querySelector('[data-modal="hide"]').addEventListener('click', this.closeModal, true);
+		handleUpdate: function(event) {
+			let modalWrap = closestByClass(event.target, 'gt-modal-wrap');
+			if(Element.prototype.remove) {
+				modalWrap.remove();
+			}else{
+				modalWrap.parentNode.removeChild(modalWrap);
+			}
+			console.log(1111);
 		},
-		closeModal: function(event) {
-			closestByClass(event.target, 'gt-modal').remove();
-			closestByClass(event.target, 'gt-modal').style.display = 'none';
+		close: function(event) {
+			console.log(event);
+			// let modalWrap = closestByClass(event.target, 'gt-modal-wrap');
+			// if(Element.prototype.remove) {
+			// 	modalWrap.remove();
+			// }else{
+			// 	modalWrap.parentNode.removeChild(modalWrap);
+			// }
 		}
 	};
 
