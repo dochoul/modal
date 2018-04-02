@@ -12,8 +12,47 @@
     clonedModal: 'cloned-modal',
 
     open: function(obj) {
+      var selector = obj.target.charAt(0);
+      //ajax or ajax not, there is no try...
+      switch(selector) {
+        case '#':
+          this.notAjax(obj);
+        break;
+        case '.':
+          console.error('gtris(v1.2.0): Target accept only ID or URL.');
+        break;
+        default:
+          this.ajax(obj);
+        break;
+      }
+    },
+    ajax: function(obj) {
+      var self = this;
+      var xhttp = new XMLHttpRequest();
 
-      let modalWindow;
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          self.modalWrap = document.createElement("div");
+          self.modalWrap.classList.add('gt-modal-wrap');
+          document.body.appendChild(self.modalWrap);
+
+          var parser = new DOMParser();
+          var el = parser.parseFromString(this.response, "text/html");
+          el.querySelector('.gt-modal').style.display = 'block';
+          self.modalWrap.appendChild(el.querySelector('.gt-modal'));
+
+          var modalWindow = el.querySelector('.gt-modal');
+          self.modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', function() {
+            self.close();
+          });
+
+        }
+      };
+      xhttp.open("GET", obj.target, true);
+      xhttp.send();
+    },
+    notAjax: function(obj) {
+      var modalWindow;
 
       //모달 윈도우를 래핑하는 디비전을 만들고 문서의 가장 하단에 append 한다.
       this.modalWrap = document.createElement("div");

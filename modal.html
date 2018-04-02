@@ -19,8 +19,8 @@
 <body>
 
 
-
-<button onclick="openModal()">modal</button>
+<button onclick="openModal('#modal')">modal</button>
+<button onclick="openModal('https://static.gabia.com/gtris/1.2.0/assets/ajax-modal.html')">ajax modal</button>
 
 <div id="modal" class="gt-modal">
 	<div class="gt-modal-content">
@@ -40,6 +40,7 @@
 	</div>
 </div>
 
+<div id="demo"></div>
 
 <a href="www.gabia.com" id="temp">temptemptemptemptemptemp</a>
 
@@ -47,13 +48,11 @@
 
 <script src="modal.js"></script>
 <script>
-	function openModal() {
+	function openModal(_target) {
 		gtris.ui.modal.open({
-			target: '#modal'
+			target: _target
 		});
-	}
-	//gtris.ui.modal.close();
-
+	};
 
 	document.getElementById('temp').addEventListener('click', temp);
 	function temp(event) {
