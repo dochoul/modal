@@ -8,55 +8,38 @@
 
 		ESC_KEY_CLICK: 'esc_key_click',
 		CLOSE_BUTTON_CLICK: 'close_button_click',
+		modalWrap: 'gt-modal-wrap',
 		clonedModal: 'cloned_modal',
 
 		open: function(obj) {
 
-			let self = this;
+			let modalWindow;
 
-			//append gt-modal-wrap
-			let modalWrap = document.createElement("div");
-			modalWrap.classList.add('gt-modal-wrap');
-			document.body.appendChild(modalWrap);
+			//모달 윈도우를 래핑하는 디비전을 만들고 문서의 가장 하단에 append 한다.
+			this.modalWrap = document.createElement("div");
+			this.modalWrap.classList.add('gt-modal-wrap');
+			document.body.appendChild(this.modalWrap);
 
-			if(document.querySelector(obj.target)) {
-				let modalWindow = document.querySelector(obj.target);
-				modalWrap.appendChild(modalWindow);
+			//문서에서 모달 윈도우를 가져온다.
+			modalWindow = document.querySelector(obj.target);
+
+			if(modalWindow) {
+				this.modalWrap.appendChild(modalWindow);
 				modalWindow.style.display = 'block';
-				modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', this.handleUpdate, false);
-
-				//modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', this.handleUpdate(modalWrap), true);
-
-				// modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', function() {
-				// 	self.handleUpdate(modalWrap, self.CLOSE_BUTTON_CLICK);
-				// }, false);
+				modalWindow.querySelector('[data-modal="hide"]').addEventListener('click', this.close, false);
 				this.clonedModal = modalWindow.cloneNode(true);
 			}else{
-				modalWrap.appendChild(this.clonedModal);
-				modalWrap.querySelector('.gt-modal').style.display = 'block';
-				modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', this.handleUpdate, false);
-				// modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', function() {
-				// 	self.handleUpdate(modalWrap, self.CLOSE_BUTTON_CLICK);
-				// }, false);
+				this.modalWrap.appendChild(this.clonedModal);
+				this.clonedModal.style.display = 'block';
+				this.clonedModal.querySelector('[data-modal="hide"]').addEventListener('click', this.close, false);
 			}
-		},
-		handleUpdate: function(event) {
-			let modalWrap = closestByClass(event.target, 'gt-modal-wrap');
-			if(Element.prototype.remove) {
-				modalWrap.remove();
-			}else{
-				modalWrap.parentNode.removeChild(modalWrap);
-			}
-			console.log(1111);
 		},
 		close: function(event) {
-			console.log(event);
-			// let modalWrap = closestByClass(event.target, 'gt-modal-wrap');
-			// if(Element.prototype.remove) {
-			// 	modalWrap.remove();
-			// }else{
-			// 	modalWrap.parentNode.removeChild(modalWrap);
-			// }
+			if(Element.prototype.remove) {
+				modal.modalWrap.remove();
+			}else{
+				modal.modalWrap.parentNode.removeChild(modalWrap);
+			}
 		}
 	};
 
