@@ -9,7 +9,7 @@
     ESC_KEY_CLICK: 'esc_key_click',
     CLOSE_BUTTON_CLICK: 'close_button_click',
     modalWrap: 'gt-modal-wrap',
-    clonedModal: 'cloned_modal',
+    clonedModal: 'cloned-modal',
 
     open: function(obj) {
 
