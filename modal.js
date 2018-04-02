@@ -8,6 +8,7 @@
 
     ESC_KEY_CLICK: 'esc_key_click',
     CLOSE_BUTTON_CLICK: 'close_button_click',
+    isAjax: false,
     modalWrap: 'gt-modal-wrap',
     clonedModal: 'cloned-modal',
 
@@ -16,14 +17,16 @@
       //ajax or ajax not, there is no try...
       switch(selector) {
         case '#':
+          this.ajax = false;
           this.notAjax(obj);
-        break;
+          break;
         case '.':
           console.error('gtris(v1.2.0): Target accept only ID or URL.');
-        break;
+          break;
         default:
+          this.ajax = true;
           this.ajax(obj);
-        break;
+          break;
       }
     },
     ajax: function(obj) {
@@ -45,7 +48,6 @@
           self.modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', function() {
             self.close();
           });
-
         }
       };
       xhttp.open("GET", obj.target, true);
