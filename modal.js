@@ -6,52 +6,48 @@
 
   var modal = {
 
-    ESC_KEY_CLICK: 'esc_key_click',
-    CLOSE_BUTTON_CLICK: 'close_button_click',
     isAjax: false,
     modalWrap: 'gt-modal-wrap',
     clonedModal: 'cloned-modal',
 
     open: function(obj) {
-      var selector = obj.target.charAt(0);
       //ajax or ajax not, there is no try...
-      switch(selector) {
+      switch(obj.target.charAt(0)) {
         case '#':
-          this.ajax = false;
+          this.isAjax = false;
           this.notAjax(obj);
           break;
         case '.':
           console.error('gtris(v1.2.0): Target accept only ID or URL.');
           break;
         default:
-          this.ajax = true;
+          this.isAjax = true;
           this.ajax(obj);
           break;
       }
     },
     ajax: function(obj) {
       var self = this;
-      var xhttp = new XMLHttpRequest();
 
-      xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          self.modalWrap = document.createElement("div");
-          self.modalWrap.classList.add('gt-modal-wrap');
-          document.body.appendChild(self.modalWrap);
+      getAjax(obj.target, function(response) {
 
-          var parser = new DOMParser();
-          var el = parser.parseFromString(this.response, "text/html");
-          el.querySelector('.gt-modal').style.display = 'block';
-          self.modalWrap.appendChild(el.querySelector('.gt-modal'));
+        self.modalWrap = document.createElement("div");
+        self.modalWrap.classList.add('gt-modal-wrap');
+        document.body.appendChild(self.modalWrap);
 
-          var modalWindow = el.querySelector('.gt-modal');
-          self.modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', function() {
-            self.close();
-          });
-        }
-      };
-      xhttp.open("GET", obj.target, true);
-      xhttp.send();
+        var parser = new DOMParser();
+        var el = parser.parseFromString(response, "text/html");
+        el.querySelector('.gt-modal').style.display = 'block';
+        self.modalWrap.appendChild(el.querySelector('.gt-modal'));
+
+        self.modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', function() {
+          self.close(obj);
+        });
+
+        //completed event return
+        if(obj.completed) return obj.completed();
+
+      });
     },
     notAjax: function(obj) {
       var modalWindow;
@@ -75,12 +71,13 @@
         this.clonedModal.querySelector('[data-modal="hide"]').addEventListener('click', this.close, false);
       }
     },
-    close: function(event) {
+    close: function(obj) {
       if(Element.prototype.remove) {
         modal.modalWrap.remove();
       }else{
         modal.modalWrap.parentNode.removeChild(modalWrap);
       }
+      if(obj.closed) return obj.closed();
     }
   };
 
@@ -88,6 +85,17 @@
 
 })(window.gtris);
 
+
+function getAjax(url, success) {
+    var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState>3 && xhr.status==200) success(xhr.responseText);
+    };
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.send();
+    return xhr;
+}
 
 function $(selector, context) {
 	return (context || document).querySelectorAll(selector);
