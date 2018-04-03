@@ -28,12 +28,11 @@
       getAjax(obj.target, function(response) {
 
         var modalWrap = self.createDiv('gt-modal-wrap');
-        var parser = new DOMParser();
-        var paeseHTML = parser.parseFromString(response, "text/html");
+        var parseHTML = new DOMParser().parseFromString(response, 'text/html');
 
         document.body.appendChild( modalWrap );
-        paeseHTML.querySelector('.gt-modal').style.display = 'block';
-        modalWrap.appendChild( paeseHTML.querySelector('.gt-modal') );
+        parseHTML.querySelector('.gt-modal').style.display = 'block';
+        modalWrap.appendChild( parseHTML.querySelector('.gt-modal') );
 
         modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', function() {
           self.close(obj);
@@ -78,6 +77,36 @@
 
 
 
+function DOMParser(text) {
+  var DOMParser_proto = DOMParser.prototype;
+  var real_parseFromString = DOMParser_proto.parseFromString;
+
+  // Firefox/Opera/IE throw errors on unsupported types
+  try {
+    // WebKit returns null on unsupported types
+    if ((new DOMParser).parseFromString("", "text/html")) {
+      // text/html parsing is natively supported
+      return;
+    }
+  } catch (ex) {}
+
+  DOMParser_proto.parseFromString = function(markup, type) {
+    if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
+      var doc = document.implementation.createHTMLDocument("");
+            if (markup.toLowerCase().indexOf('<!doctype') > -1) {
+              doc.documentElement.innerHTML = markup;
+            }
+            else {
+              doc.body.innerHTML = markup;
+            }
+      return doc;
+    } else {
+      return real_parseFromString.apply(this, arguments);
+    }
+  };
+}
+
+
 function getAjax(url, success) {
     var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
     xhr.open('GET', url);
@@ -90,7 +119,7 @@ function getAjax(url, success) {
 }
 
 function $(selector, context) {
-	return (context || document).querySelectorAll(selector);
+  return (context || document).querySelectorAll(selector);
 }
 
 function $1(selector, context) {
@@ -98,9 +127,9 @@ function $1(selector, context) {
 }
 
 function closestByClass(el, clazz) {
-	while (el.className != clazz) {
-		el = el.parentNode;
-		if (!el) return null;
-	}
-	return el;
+  while (el.className != clazz) {
+    el = el.parentNode;
+    if (!el) return null;
+  }
+  return el;
 }
