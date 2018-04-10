@@ -31,29 +31,31 @@
       var self = this;
       getAjax(obj.target, function(response) {
         var parseHTML = new DOMParser().parseFromString(response, 'text/html');
-        self.showModal(parseHTML, obj);
+        self.showModal(obj, parseHTML);
       });
     },
     notAjax: function(obj) {
       var modalWindow = document.querySelector(obj.target);
       if(modalWindow) {
         this.clonedModal = modalWindow.cloneNode(true);
-        this.showModal(modalWindow, obj);
+        this.showModal(obj, modalWindow);
       }else{
-        this.showModal(this.clonedModal, obj);
+        this.showModal(obj, this.clonedModal);
       }
     },
-    showModal: function(modalWindow, obj) {
+    showModal: function(obj, modalWindow) {
       var self = this;
+      var _modal;
+      var modalWrap;
       if(this.isAjax) {
-        modalWindow = modalWindow.querySelector('.gt-modal');
+        _modal = modalWindow.querySelector('.gt-modal');
       }else{
-        modalWindow = modalWindow;
+        _modal = modalWindow;
       }
-      var modalWrap = this.createDiv('gt-modal-wrap');
+      modalWrap = this.createDiv('gt-modal-wrap');
       document.body.appendChild( modalWrap );
-      modalWindow.style.display = 'block';
-      modalWrap.appendChild( modalWindow );
+      _modal.style.display = 'block';
+      modalWrap.appendChild( _modal );
       modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', function() {
         self.close(obj);
       });
