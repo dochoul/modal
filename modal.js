@@ -35,7 +35,8 @@
       });
     },
     notAjax: function(obj) {
-      if(document.querySelector(obj.target)) {
+      var modalWindow = document.querySelector(obj.target);
+      if(modalWindow) {
         this.clonedModal = modalWindow.cloneNode(true);
         this.showModal(modalWindow, obj);
       }else{
