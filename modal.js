@@ -56,17 +56,22 @@
       document.body.appendChild( modalWrap );
       _modal.style.display = 'block';
       modalWrap.appendChild( _modal );
-      modalWrap.querySelector('[data-modal="hide"]').addEventListener('click', function() {
+
+      // modalWrap.addEventListener('click', function(e) {
+      //   console.log(modalWindow.querySelector('[data-modal="hide"]'));
+      // });
+
+      modalWrap.querySelector('[data-modal="hide"]').onclick = function(event) {
         self.close(obj);
-      });
+      };
 
       //completed event return
-      if(obj.completed) return obj.completed();
+      if(obj.completed && this.isAjax) return obj.completed();
     },
     close: function(obj) {
       var modalWrap = document.querySelector('.gt-modal-wrap');
       document.body.removeChild(modalWrap);
-      if(obj.closed) return obj.closed();
+      if(obj.closed && this.isAjax) return obj.closed();
     },
     createDiv: function(className) {
       var div = document.createElement('div');
@@ -79,6 +84,19 @@
 
 })(window.gtris);
 
+
+
+function addListenerWithArgs(elem, evt, func, vars){
+    var f = function(ff, vv){
+            return (function (){
+                ff(vv);
+            });
+    }(func, vars);
+
+    elem.addEventListener(evt, f);
+
+    return f;
+}
 
 
 function DOMParser(text) {
