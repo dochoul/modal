@@ -1,4 +1,4 @@
-# Size Limit
+## Size Limit
 
 ```html
 <div class="gt-modal">
