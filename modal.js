@@ -61,8 +61,8 @@
       modal_container.appendChild( modal_window );
 
       /*
-      clone된 DOM은 Document에서 삭제 되어도 이벤트는 삭제 되지 않는다(?)
-      이벤트가 중복돼어 걸려 addEventListener를 사용하지 못함...
+      clone된 node는 document에서 삭제 되어도 이벤트는 삭제 되지 않는다(?)
+      이벤트가 중첩되는 현상으로 addEventListener를 사용하지 못함...
       modalWrap.addEventListener('click', function(e) {
         console.log(modalWindow.querySelector('[data-modal="hide"]'));
       });*/
@@ -72,12 +72,12 @@
       };
 
       //completed event return
-      if(obj.completed && this.isAjax) return obj.completed();
+      if(obj.completed) return obj.completed();
     },
     close: function(obj) {
       var modalWrap = document.querySelector('.gt-modal-wrap');
       document.body.removeChild(modalWrap);
-      if(obj.closed && this.isAjax) return obj.closed();
+      if(obj.closed) return obj.closed();
     },
     createDiv: function(className) {
       var div = document.createElement('div');
