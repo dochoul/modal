@@ -1,7 +1,5 @@
 # Size Limit [![Cult Of Martians][cult-img]][cult]
 
-# Size Limit [![Cult Of Martians][cult-img]][cult]
-
 ```html
 <div class="gt-modal">
   <div class="gt-modal-content">
@@ -10,6 +8,12 @@
       <div class="gt-modal-close" data-modal="hide">close</div>
   </div>
 </div>
+```
+
+```javascript
+gtris.ui.modal.open({
+  target: 'Set the URL or ID.'
+})
 ```
 
 Size Limit is a tool to prevent JavaScript libraries bloat.
