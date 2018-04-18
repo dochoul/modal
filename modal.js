@@ -70,7 +70,7 @@
       //completed event return
       if(obj.completed) return obj.completed();
     },
-    close: function(event, obj) {
+    close: function(obj) {
       var modalWrap = document.querySelector('.gt-modal-wrap');
       if(modalWrap) {
         document.body.removeChild(modalWrap);
