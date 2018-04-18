@@ -14,6 +14,22 @@
 .gt-modal-content .gt-modal-close {position:absolute; top:10px; right:10px}
 .gt-modal-content {width:800px}
 .gt-modal {display:none}
+
+
+
+/*.gt-modal-wrap .gt-animate-opacity { animation: animatepopup 0.2s forwards; }
+@keyframes animatepopup { 
+	0% {transform:scale(0.94); opacity:0}
+	100% {transform:scale(1); opacity:1}
+}
+
+.gt-animate-disolve { animation: disolve 0.2s forwards; }
+@keyframes disolve { 
+	0% {opacity:0}
+	100% {opacity:1}
+}*/
+
+
 </style>
 </head>
 <body>
@@ -23,7 +39,7 @@
 <button onclick="openModal('https://static.gabia.com/gtris/1.2.0/assets/ajax-modal.html')">ajax modal</button>
 
 <div id="modal" class="gt-modal">
-	<div class="gt-modal-content">
+	<div class="gt-modal-content gt-animate-opacity">
 		<div class="gt-modal-header">Modal Header</div>
 		<div class="gt-modal-body">
 			<p class="gt-padding-large">
