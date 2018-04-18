@@ -19,7 +19,6 @@
         case '.':
           this.isAjax = false;
           this.notAjax(obj);
-          console.error('gtris(v1.2.0): Target accept only ID or URL.');
           break;
         default:
           this.isAjax = true;
@@ -45,23 +44,30 @@
     },
     showModal: function(obj, modalWindow) {
       var self = this;
-      var _modal;
-      var modalWrap;
+      var modal_container = this.createDiv('gt-modal-wrap');
+      var modal_window;
+
       if(this.isAjax) {
-        _modal = modalWindow.querySelector('.gt-modal');
+        modal_window = modalWindow.querySelector('.gt-modal');
       }else{
-        _modal = modalWindow;
+        modal_window = modalWindow;
       }
-      modalWrap = this.createDiv('gt-modal-wrap');
-      document.body.appendChild( modalWrap );
-      _modal.style.display = 'block';
-      modalWrap.appendChild( _modal );
 
-      // modalWrap.addEventListener('click', function(e) {
-      //   console.log(modalWindow.querySelector('[data-modal="hide"]'));
-      // });
+      //모달 컨텐츠 display 속성을 block으로 변경
+      modal_window.style.display = 'block';
 
-      modalWrap.querySelector('[data-modal="hide"]').onclick = function(event) {
+      //모달 컨테이너와 모달 컨텐츠를 차례로 붙인다.
+      document.body.appendChild( modal_container );
+      modal_container.appendChild( modal_window );
+
+      /*
+      clone된 DOM은 Document에서 삭제 되어도 이벤트는 삭제 되지 않는다(?)
+      이벤트가 중복돼어 걸려 addEventListener를 사용하지 못함...
+      modalWrap.addEventListener('click', function(e) {
+        console.log(modalWindow.querySelector('[data-modal="hide"]'));
+      });*/
+
+      modal_window.querySelector('[data-modal="hide"]').onclick = function(event) {
         self.close(obj);
       };
 
@@ -85,18 +91,6 @@
 })(window.gtris);
 
 
-
-function addListenerWithArgs(elem, evt, func, vars){
-    var f = function(ff, vv){
-            return (function (){
-                ff(vv);
-            });
-    }(func, vars);
-
-    elem.addEventListener(evt, f);
-
-    return f;
-}
 
 
 function DOMParser(text) {
@@ -143,20 +137,4 @@ function getAjax(url, success) {
   xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
   xhr.send();
   return xhr;
-}
-
-function $(selector, context) {
-  return (context || document).querySelectorAll(selector);
-}
-
-function $1(selector, context) {
-    return (context || document).querySelector(selector);
-}
-
-function closestByClass(el, clazz) {
-  while (el.className != clazz) {
-    el = el.parentNode;
-    if (!el) return null;
-  }
-  return el;
 }
