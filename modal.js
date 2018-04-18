@@ -57,25 +57,23 @@
       document.body.appendChild( modal_container );
       modal_container.appendChild( modal_window );
 
-      /*
-      clone된 node는 document에서 삭제 되어도 이벤트는 삭제 되지 않는다(?)
-      이벤트가 중첩되는 현상으로 addEventListener를 사용하지 못함...
-      modalWrap.addEventListener('click', function(e) {
-        console.log(modalWindow.querySelector('[data-modal="hide"]'));
-      });*/
-
-      modal_window.querySelector('[data-modal="hide"]').onclick = function(event) {
+      modal_window.querySelector('[data-modal="hide"]').addEventListener('click', function(event) {
         self.close(obj);
-      };
+      });
+
+      document.addEventListener('keyup', function(event) {
+        if(event.keyCode === 27) self.close(obj);
+      }, {once:true});
 
       //completed event return
       if(obj.completed) return obj.completed();
     },
-    close: function(obj) {
+    close: function(event, obj) {
       var modalWrap = document.querySelector('.gt-modal-wrap');
-      document.body.removeChild(modalWrap);
-      //closed event return
-      if(obj && obj.closed) return obj.closed();
+      if(modalWrap) {
+        document.body.removeChild(modalWrap);
+        if(obj && obj.closed) return obj.closed(); //return closed event
+      }
     },
     createDiv: function(className) {
       var div = document.createElement('div');
