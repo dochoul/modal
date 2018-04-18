@@ -78,7 +78,7 @@
       var modalWrap = document.querySelector('.gt-modal-wrap');
       document.body.removeChild(modalWrap);
       //closed event return
-      if(obj.closed) return obj.closed();
+      if(obj && obj.closed) return obj.closed();
     },
     createDiv: function(className) {
       var div = document.createElement('div');
