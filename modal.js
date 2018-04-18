@@ -36,7 +36,7 @@
     notAjax: function(obj) {
       var modalWindow = document.querySelector(obj.target);
       if(modalWindow) {
-        this.clonedModal = modalWindow.cloneNode(true);
+        this.clonedModal = modalWindow.cloneNode(true); //specifies whether all descendants of the node should be cloned, default:false
         this.showModal(obj, modalWindow);
       }else{
         this.showModal(obj, this.clonedModal);
