@@ -1,4 +1,4 @@
-# Size Limit [![Cult Of Martians][cult-img]][cult]
+# Size Limit
 
 ```html
 <div class="gt-modal">
