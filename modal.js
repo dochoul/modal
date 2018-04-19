@@ -28,9 +28,10 @@
     },
     ajax: function(obj) {
       var self = this;
-      this.getAjax(obj.target, function(response) {
-        var parseHTML = new DOMParser().parseFromString(response, 'text/html');
-        self.showModal(obj, parseHTML);
+      getAjax(obj.target, function(response) {
+        var parser = new DOMParser()
+        var html = parser.parseFromString(response, 'text/html'); //The DOMParser interface provides the ability to parse XML or HTML source code from a string into a DOM Document.
+        self.showModal(obj, html.querySelector('.gt-modal'));
       });
     },
     notAjax: function(obj) {
@@ -42,13 +43,7 @@
     showModal: function(obj, modalWindow) {
       var self = this;
       var modal_container = this.createDiv('gt-modal-wrap');
-      var modal_window;
-
-      if(this.isAjax) {
-        modal_window = modalWindow.querySelector('.gt-modal');
-      }else{
-        modal_window = modalWindow;
-      }
+      var modal_window = modalWindow;
 
       //모달 컨텐츠 display 속성을 block으로 변경
       modal_window.style.display = 'block';
@@ -63,7 +58,7 @@
       }, {once:true});
 
       //esckey press close modal
-      document.addEventListener('keyup', function(event) {
+      document.addEventListener('keydown', function(event) {
         if(event.keyCode === 27) self.close(obj);
       }, {once:true});
 
@@ -82,21 +77,7 @@
       div.className = className;
       return div;
     },
-    getAjax: function(url, success) {
-      var xhr;
-      if(window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest(); //for modern browsers
-      }else{
-        xhr = new ActiveXObject("Microsoft.XMLHTTP"); //for old IE browsers
-      }
-      xhr.open('GET', url);
-      xhr.onreadystatechange = function() { //status 200: 성공
-        if (xhr.readyState > 3 && xhr.status === 200) success(xhr.responseText); //반환된 텍스트
-      };
-      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-      xhr.send();
-      return xhr;
-    }
+    
   };
 
   gtris.ui.modal = modal;
@@ -105,32 +86,48 @@
 
 
 
+function getAjax(url, success) {
+  var xhr;
+  if(window.XMLHttpRequest) {
+    xhr = new XMLHttpRequest(); //for modern browsers
+  }else{
+    xhr = new ActiveXObject("Microsoft.XMLHTTP"); //for old IE browsers
+  }
+  xhr.open('GET', url);
+  xhr.onreadystatechange = function() { //status 200: 성공
+    if (xhr.readyState > 3 && xhr.status === 200) success(xhr.responseText); //반환된 텍스트
+  };
+  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+  xhr.send();
+  return xhr;
+}
 
-// function DOMParser(text) {
-//   var DOMParser_proto = DOMParser.prototype;
-//   var real_parseFromString = DOMParser_proto.parseFromString;
+// for IE9, DOMParser...
+function DOMParser(text) {
+  var DOMParser_proto = DOMParser.prototype;
+  var real_parseFromString = DOMParser_proto.parseFromString;
 
-//   // Firefox/Opera/IE throw errors on unsupported types
-//   try {
-//     // WebKit returns null on unsupported types
-//     if ((new DOMParser).parseFromString("", "text/html")) {
-//       // text/html parsing is natively supported
-//       return;
-//     }
-//   } catch (ex) {}
+  // Firefox/Opera/IE throw errors on unsupported types
+  try {
+    // WebKit returns null on unsupported types
+    if ((new DOMParser).parseFromString("", "text/html")) {
+      // text/html parsing is natively supported
+      return;
+    }
+  } catch (ex) {}
 
-//   DOMParser_proto.parseFromString = function(markup, type) {
-//     if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
-//       var doc = document.implementation.createHTMLDocument("");
-//             if (markup.toLowerCase().indexOf('<!doctype') > -1) {
-//               doc.documentElement.innerHTML = markup;
-//             }
-//             else {
-//               doc.body.innerHTML = markup;
-//             }
-//       return doc;
-//     } else {
-//       return real_parseFromString.apply(this, arguments);
-//     }
-//   };
-// }
+  DOMParser_proto.parseFromString = function(markup, type) {
+    if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
+      var doc = document.implementation.createHTMLDocument("");
+            if (markup.toLowerCase().indexOf('<!doctype') > -1) {
+              doc.documentElement.innerHTML = markup;
+            }
+            else {
+              doc.body.innerHTML = markup;
+            }
+      return doc;
+    } else {
+      return real_parseFromString.apply(this, arguments);
+    }
+  };
+}
