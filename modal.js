@@ -28,7 +28,7 @@
     },
     ajax: function(obj) {
       var self = this;
-      getAjax(obj.target, function(response) {
+      this.getAjax(obj.target, function(response) {
         var parseHTML = new DOMParser().parseFromString(response, 'text/html');
         self.showModal(obj, parseHTML);
       });
@@ -60,7 +60,7 @@
       //모달 닫기 버튼 클릭
       modal_window.querySelector('[data-modal="hide"]').addEventListener('click', function(event) {
         self.close(obj);
-      });
+      }, {once:true});
 
       //esckey press close modal
       document.addEventListener('keyup', function(event) {
@@ -81,6 +81,21 @@
       var div = document.createElement('div');
       div.className = className;
       return div;
+    },
+    getAjax: function(url, success) {
+      var xhr;
+      if(window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest(); //for modern browsers
+      }else{
+        xhr = new ActiveXObject("Microsoft.XMLHTTP"); //for old IE browsers
+      }
+      xhr.open('GET', url);
+      xhr.onreadystatechange = function() { //status 200: 성공
+        if (xhr.readyState > 3 && xhr.status === 200) success(xhr.responseText); //반환된 텍스트
+      };
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.send();
+      return xhr;
     }
   };
 
@@ -91,48 +106,31 @@
 
 
 
-function DOMParser(text) {
-  var DOMParser_proto = DOMParser.prototype;
-  var real_parseFromString = DOMParser_proto.parseFromString;
+// function DOMParser(text) {
+//   var DOMParser_proto = DOMParser.prototype;
+//   var real_parseFromString = DOMParser_proto.parseFromString;
 
-  // Firefox/Opera/IE throw errors on unsupported types
-  try {
-    // WebKit returns null on unsupported types
-    if ((new DOMParser).parseFromString("", "text/html")) {
-      // text/html parsing is natively supported
-      return;
-    }
-  } catch (ex) {}
+//   // Firefox/Opera/IE throw errors on unsupported types
+//   try {
+//     // WebKit returns null on unsupported types
+//     if ((new DOMParser).parseFromString("", "text/html")) {
+//       // text/html parsing is natively supported
+//       return;
+//     }
+//   } catch (ex) {}
 
-  DOMParser_proto.parseFromString = function(markup, type) {
-    if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
-      var doc = document.implementation.createHTMLDocument("");
-            if (markup.toLowerCase().indexOf('<!doctype') > -1) {
-              doc.documentElement.innerHTML = markup;
-            }
-            else {
-              doc.body.innerHTML = markup;
-            }
-      return doc;
-    } else {
-      return real_parseFromString.apply(this, arguments);
-    }
-  };
-}
-
-
-function getAjax(url, success) {
-  var xhr;
-  if(window.XMLHttpRequest) {
-    xhr = new XMLHttpRequest(); //for modern browsers
-  }else{
-    xhr = new ActiveXObject("Microsoft.XMLHTTP"); //for old IE browsers
-  }
-  xhr.open('GET', url);
-  xhr.onreadystatechange = function() { //status 200: 성공
-    if (xhr.readyState > 3 && xhr.status === 200) success(xhr.responseText); //반환된 텍스트
-  };
-  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-  xhr.send();
-  return xhr;
-}
+//   DOMParser_proto.parseFromString = function(markup, type) {
+//     if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
+//       var doc = document.implementation.createHTMLDocument("");
+//             if (markup.toLowerCase().indexOf('<!doctype') > -1) {
+//               doc.documentElement.innerHTML = markup;
+//             }
+//             else {
+//               doc.body.innerHTML = markup;
+//             }
+//       return doc;
+//     } else {
+//       return real_parseFromString.apply(this, arguments);
+//     }
+//   };
+// }
