@@ -36,14 +36,13 @@
     },
     notAjax: function(obj) {
       var modalWindow = document.querySelector(obj.target);
-      //specifies whether all descendants of the node should be cloned, default:false
-      if(modalWindow) this.clonedModal = modalWindow.cloneNode(true);
+      if(modalWindow) this.clonedModal = modalWindow.cloneNode(true); //닫기 버튼을 클릭하면 모달 윈도우는 DOM에서 삭제된다. 깊은 복사로 모달 윈도우를 클론해두자!!!
       this.showModal(obj, this.clonedModal);
     },
     showModal: function(obj, modalWindow) {
-      var self = this;
       var modal_container = this.createDiv('gt-modal-wrap');
       var modal_window = modalWindow;
+      var close_button = modal_window.querySelector('[data-modal="hide"]');
 
       //모달 컨텐츠 display 속성을 block으로 변경
       modal_window.style.display = 'block';
@@ -54,13 +53,13 @@
 
       //모달 닫기 버튼 클릭
       modal_window.querySelector('[data-modal="hide"]').addEventListener('click', function(event) {
-        self.close(obj);
-      }, {once:true});
+        this.close(obj);
+      }.bind(this));
 
       //esckey press close modal
       document.addEventListener('keydown', function(event) {
-        if(event.keyCode === 27) self.close(obj);
-      }, {once:true});
+        if(event.keyCode === 27) this.close(obj);
+      }.bind(this));
 
       //completed event return
       if(obj.completed) return obj.completed();
