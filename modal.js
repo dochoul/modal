@@ -39,9 +39,9 @@
       if(modalWindow) this.clonedModal = modalWindow.cloneNode(true); //닫기 버튼을 클릭하면 모달 윈도우는 DOM에서 삭제된다. 깊은 복사로 모달 윈도우를 클론해두자!!!
       this.showModal(obj, this.clonedModal);
     },
-    showModal: function(obj, modalWindow) {
+    showModal: function(obj, clonedModal) {
       var modal_container = this.createDiv('gt-modal-wrap');
-      var modal_window = modalWindow;
+      var modal_window = clonedModal;
       var close_button = modal_window.querySelector('[data-modal="hide"]');
 
       //모달 컨텐츠 display 속성을 block으로 변경
