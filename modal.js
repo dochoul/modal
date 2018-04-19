@@ -52,7 +52,7 @@
       modal_container.appendChild( modal_window );
 
       //모달 닫기 버튼 클릭
-      modal_window.querySelector('[data-modal="hide"]').addEventListener('click', function(event) {
+      close_button.addEventListener('click', function(event) {
         this.close(obj);
       }.bind(this));
 
