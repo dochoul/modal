@@ -12,6 +12,7 @@
 </div>
 ```
 
+## Call the plugin when the body is load:
 ```javascript
 gtris.ui.modal.open({
   target: 'Set the URL or ID.'
