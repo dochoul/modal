@@ -54,12 +54,12 @@
       //모달 닫기 버튼 클릭
       modal_window.querySelector('[data-modal="hide"]').addEventListener('click', function(event) {
         this.close(obj);
-      }.bind(this), {once:true});
+      }.bind(this));
 
       //esckey press close modal
       document.addEventListener('keydown', function(event) {
         if(event.keyCode === 27) this.close(obj);
-      }.bind(this), {once:true});
+      }.bind(this));
 
       //completed event return
       if(obj.completed) return obj.completed();
