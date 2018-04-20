@@ -12,10 +12,6 @@
 </div>
 ```
 
-<script src="https://gist.github.com/gabia-frontend-dev/98017e8ac565b05cbc92b41e1eb8b163.js"></script>
-<script src="https://gist.github.com/gabia-frontend-dev/df1148c073020be83dd8f2777510dd6f.js"></script>
-
-
 ### Call the plugin when the body is load:
 ```javascript
 gtris.ui.modal.open({
