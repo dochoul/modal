@@ -40,7 +40,8 @@
       this.showModal(obj, this.clonedModal);
     },
     showModal: function(obj, clonedModal) {
-      var modal_container = this.createDiv('gt-modal-wrap');
+      var modal_container = document.createElement('div');
+      modal_container.className = 'gt-modal-wrap';
       var modal_window = clonedModal;
       var close_button = modal_window.querySelector('[data-modal="hide"]');
 
@@ -70,12 +71,7 @@
         document.body.removeChild(modalWrap);
         if(obj && obj.closed) return obj.closed(); //return closed event
       }
-    },
-    createDiv: function(className) {
-      var div = document.createElement('div');
-      div.className = className;
-      return div;
-    },
+    }
   };
 
   gtris.ui.modal = modal;
