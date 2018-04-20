@@ -1,4 +1,4 @@
-### Size Limit
+### Add content
 
 ```html
 <div class="gt-modal">
