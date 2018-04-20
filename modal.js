@@ -76,15 +76,13 @@
       div.className = className;
       return div;
     },
-    
   };
 
   gtris.ui.modal = modal;
-
 })(window.gtris);
 
 
-
+// ajax
 function getAjax(url, success) {
   var xhr;
   if(window.XMLHttpRequest) {
