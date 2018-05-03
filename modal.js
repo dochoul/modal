@@ -43,7 +43,7 @@
         complete: function() {
         }
       });
-		},
+    },
     notAjax: function(obj) {
       var modalWindow = document.querySelector(obj.target);
       if(modalWindow) this.clonedModal = modalWindow.cloneNode(true); //닫기 버튼을 클릭하면 모달 윈도우는 DOM에서 삭제된다. 깊은 복사로 모달 윈도우를 클론해두자!!!
