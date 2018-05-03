@@ -21,21 +21,11 @@
       }
     },
     ajax: function(obj) {
-      $.ajax({
-        context: this,
-        type: 'GET',
-        dataType: 'html',
-        url: obj.target,
-        error : function(xhr, status, error) {
-          //console.log(xhr, status, error);
-        },
-        success: function(response) {
-          var html = document.createElement('div');
-          html.innerHTML = response;
-          this.showModal(obj, html.querySelector('.gt-modal'));
-        },
-        complete: function() {
-        }
+      var self = this;
+      this.getAjax(obj.target, function(response) {
+        var div = document.createElement('div');
+        div.innerHTML = response;
+        self.showModal(obj, div.querySelector('.gt-modal'));
       });
     },
     notAjax: function(obj) {
@@ -74,6 +64,21 @@
         document.body.removeChild(modalWrap);
         if(obj && obj.closed) return obj.closed(); //return closed event
       }
+    },
+    getAjax: function(url, success) {
+      var xhr;
+      if(window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest(); //for modern browsers
+      }else{
+        xhr = new ActiveXObject("Microsoft.XMLHTTP"); //for old IE browsers
+      }
+      xhr.open('GET', url);
+      xhr.onreadystatechange = function() { //status 200: 성공
+        if (xhr.readyState > 3 && xhr.status === 200) success(xhr.responseText); //반환된 텍스트
+      };
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.send();
+      return xhr;
     }
   };
 
