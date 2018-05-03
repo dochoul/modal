@@ -6,22 +6,16 @@
 
   var modal = {
 
-    isAjax: false,
-    clonedModal: 'cloned-modal',
-
     open: function(obj) {
       //ajax or ajax not, there is no try...
       switch(obj.target.charAt(0)) {
         case '#':
-          this.isAjax = false;
           this.notAjax(obj);
           break;
         case '.':
-          this.isAjax = false;
           this.notAjax(obj);
           break;
         default:
-          this.isAjax = true;
           this.ajax(obj);
           break;
       }
@@ -46,8 +40,7 @@
     },
     notAjax: function(obj) {
       var modalWindow = document.querySelector(obj.target);
-      if(modalWindow) this.clonedModal = modalWindow.cloneNode(true); //닫기 버튼을 클릭하면 모달 윈도우는 DOM에서 삭제된다. 깊은 복사로 모달 윈도우를 클론해두자!!!
-      this.showModal(obj, this.clonedModal);
+      this.showModal(obj, modalWindow.cloneNode(true)); //닫기 버튼을 클릭하면 모달 윈도우는 DOM에서 삭제된다. 깊은 복사로 모달 윈도우를 클론해두자!!!
     },
     showModal: function(obj, clonedModal) {
       var modal_container = document.createElement('div');
