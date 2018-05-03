@@ -27,22 +27,22 @@
       }
     },
     ajax: function(obj) {
-			$.ajax({
-				context: this,
-				type: 'GET',
+      $.ajax({
+        context: this,
+        type: 'GET',
         dataType: 'html',
         url: obj.target,
-				error : function(xhr, status, error) {
+        error : function(xhr, status, error) {
           //console.log(xhr, status, error);
-				},
-				success: function(response) {
+        },
+        success: function(response) {
           var html = document.createElement('div');
           html.innerHTML = response;
           this.showModal(obj, html.querySelector('.gt-modal'));
-				},
-				complete: function() {
-				}
-			});
+        },
+        complete: function() {
+        }
+      });
 		},
     notAjax: function(obj) {
       var modalWindow = document.querySelector(obj.target);
@@ -85,7 +85,7 @@
   };
 
   gtris.ui.modal = modal;
-  
+
 })(window.gtris);
 
 
