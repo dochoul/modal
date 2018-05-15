@@ -122,7 +122,7 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 		</div>
 	</div>
 	<div class="gt-panel-body gt-center">
-		<button type="button" class="gt-button" onclick="openModal('#modal')">modal</button>
+		<button type="button" class="gt-button" id="modal-basic-btn" onclick="modal.open()">modal</button>
 	</div>
 </div>
 <script src="https://gist.github.com/gabia-frontend-dev/98017e8ac565b05cbc92b41e1eb8b163.js"></script>
@@ -161,13 +161,15 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 <!-- <script src="modal.js"></script> -->
 <script src="dist/modal.js"></script>
 <script>
-	function openModal(t) {
-		var modal = new Modal({
-			target: t
-		})
+// Instantiate new modal
+var modal = new Modal({
+	target: '#modal',
+	closed: function() {
+		console.log('closed')
 	}
-	
+});
 </script>
+
 <!-- <script>
 	function openModal(_target) {
 		gtris.ui.modal.open({
