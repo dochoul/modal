@@ -3,77 +3,85 @@
 var Modal = /** @class */ (function () {
     function Modal(obj) {
         this.obj = obj;
-        switch (obj.target.charAt(0)) {
-            case '#':
-                this.notAjax();
-                break;
-            case '.':
-                this.notAjax();
-                break;
-            default:
-                this.ajax();
-                break;
-        }
     }
-    Modal.prototype.notAjax = function () {
-        var modalWindow = document.querySelector(this.obj.target);
-        //this.showModal(modalWindow.cloneNode(true)); //닫기 버튼을 클릭하면 모달 윈도우는 DOM에서 삭제된다. 깊은 복사로 모달 윈도우를 클론해두자!!!
-    };
-    Modal.prototype.ajax = function () {
-    };
-    Modal.prototype.showModal = function (clonedModal) {
-        // var modal_container = document.createElement('div');
-        // modal_container.className = 'gt-modal-wrap';
-        // var modal_window = clonedModal;
-        // var close_button;
-        // close_button = modal_window.querySelector('[data-modal="hide"]');
-        // //모달 컨텐츠 display 속성을 block으로 변경
-        // modal_window.style.display = 'block';
-        // //모달 컨테이너와 모달 컨텐츠를 차례로 붙인다.
-        // document.body.appendChild( modal_container );
-        // modal_container.appendChild( modal_window );
-        // close_button.addEventListener('click', this.close); 
-    };
     Modal.prototype.open = function () {
         var _this = this;
-        var self = this;
+        var modal_window;
+        switch (this.obj.target.charAt(0)) {
+            case '#':
+                modal_window = document.querySelector(this.obj.target).cloneNode(true);
+                this.showModal(modal_window);
+                break;
+            case '.':
+                break;
+            default:
+                this.getAjax(this.obj.target, function (response) {
+                    var div = document.createElement('div');
+                    div.innerHTML = response;
+                    modal_window = div.querySelector('.gt-modal');
+                    _this.showModal(modal_window);
+                });
+                break;
+        }
+    };
+    Modal.prototype.showModal = function (modal_window) {
+        var _this = this;
         var body = document.body;
-        var modal_clone = document.querySelector(this.obj.target).cloneNode(true);
         var modal_container = document.createElement('div');
-        var modal_close = modal_clone.querySelector('[data-modal="hide"]');
+        var modal_close;
         //모달 컨테이너 클래스 추가
         modal_container.className = 'gt-modal-wrap';
         //모달 윈도우 display 속성을 block으로 변경
-        modal_clone.style.display = 'block';
+        modal_window.style.display = 'block';
         //모달 컨테이너와 모달 윈도우를 차례로 붙인다.
         body.appendChild(modal_container);
-        modal_container.appendChild(modal_clone);
-        modal_close.addEventListener("click", function () {
+        modal_container.appendChild(modal_window);
+        //모달 닫기
+        modal_close = modal_window.querySelector('[data-modal="hide"]');
+        modal_close.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
             _this.close();
         });
+        // document.addEventListener('keydown', (event:Event) => {
+        //   event.preventDefault();
+        //   this.close();
+        // }, {once: true});
+        var self = this;
+        // Create a named function as your event handler
+        var myFunction = function (event) {
+            if (event.keyCode === 27) {
+                self.close();
+                removeEventListener("keydown", myFunction);
+            }
+        };
+        addEventListener("keydown", myFunction);
     };
     Modal.prototype.close = function () {
-        var modalWrap = document.querySelector('.gt-modal-wrap');
-        if (modalWrap) {
-            document.body.removeChild(modalWrap);
+        var modal_wrap = document.querySelector('.gt-modal-wrap');
+        if (modal_wrap) {
+            document.body.removeChild(modal_wrap);
             if (this.obj.closed)
                 return this.obj.closed(); //return closed event
         }
     };
     Modal.prototype.getAjax = function (url, success) {
-        // var xhr:XMLHttpRequest;
-        // if((<any>window).XMLHttpRequest) {
-        //     xhr = new XMLHttpRequest(); //for modern browsers
-        // }else{
-        //     xhr = new ActiveXObject("Microsoft.XMLHTTP"); //for old IE browsers
-        // }
-        // xhr.open('GET', url);
-        // xhr.onreadystatechange = function() { //status 200: 성공
-        //     if (xhr.readyState > 3 && xhr.status === 200) success(xhr.responseText); //반환된 텍스트
-        // };
-        // xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        // xhr.send();
-        // return xhr;
+        var xhr;
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest(); //for modern browsers
+        }
+        else {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP"); //for old IE browsers
+        }
+        xhr.open('GET', url);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState > 3 && xhr.status === 200)
+                success(xhr.responseText); //반환된 텍스트
+        };
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.send();
+        return xhr;
     };
     return Modal;
 }());

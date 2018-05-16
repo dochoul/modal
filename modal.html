@@ -66,44 +66,6 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
     top: 60%;
     border-bottom: 1px dashed #999999;
 }
-
-
-/* hamburger */
-.gt-hamburger {display:inline-block; position:absolute; top:50%; right:1em; margin-top:-22px; padding:10px; border-radius:50%; cursor:pointer; transition-duration:.3s}
-.gt-hamburger:hover {background: rgba(102, 102, 102, 0.5);}
-
-/* helper */
-.letter-spacing-1 {letter-spacing:1px}
-
-#header {box-shadow: 0 0.5rem 1rem rgba(0,0,0,.05), inset 0 -1px 0 rgba(0,0,0,.1)}
-
-.gt-sidebar {
-    background: #f8fafb;
-}
-
-.gt-sidebar .gt-collapse .gt-collapse-item .gt-collapse-header {
-    padding: 0.7em 2em;
-    letter-spacing: 0.5px;
-}
-
-
-.gt-sidebar .gt-collapse .gt-collapse-item .gt-collapse-header:hover {
-    background: #e0e0e0;
-}
-
-.gt-sidebar .gt-collapse .gt-collapse-item .gt-collapse-content {
-    padding: 0
-}
-
-.gt-sidebar .gt-collapse .gt-collapse-item .gt-collapse-content a {
-    display: block;
-    padding: 5px 3em;
-}
-
-.gt-sidebar .gt-collapse .gt-collapse-item .gt-collapse-content a:hover {
-    text-decoration: none;
-    background: #e0e0e0;
-}
 </style>
 <title>modal</title>
 </head>
@@ -122,7 +84,7 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 		</div>
 	</div>
 	<div class="gt-panel-body gt-center">
-		<button type="button" class="gt-button" id="modal-basic-btn" onclick="modal.open()">modal</button>
+		<button type="button" class="gt-button" id="modal-basic-btn" onclick="modal.open(this)">modal</button>
 	</div>
 </div>
 <script src="https://gist.github.com/gabia-frontend-dev/98017e8ac565b05cbc92b41e1eb8b163.js"></script>
@@ -139,7 +101,7 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 		</div>
 	</div>
 	<div class="gt-panel-body gt-center">
-		<button type="button" class="gt-button" onclick="openModal('https://static.gabia.com/gtris/1.2.0/assets/ajax-modal.html')">ajax modal</button>
+		<button type="button" class="gt-button" onclick="ajaxModal.open(this)">ajax modal</button>
 	</div>
 </div>
 <script src="https://gist.github.com/gabia-frontend-dev/e45f1b2db282cc70e241e0569b0bf94f.js"></script>
@@ -165,7 +127,14 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 var modal = new Modal({
 	target: '#modal',
 	closed: function() {
-		console.log('closed')
+		console.log('1')
+	}
+});
+
+var ajaxModal = new Modal({
+	target: 'https://static.gabia.com/gtris/1.2.0/assets/ajax-modal.html',
+	closed: function() {
+		console.log('2')
 	}
 });
 </script>
