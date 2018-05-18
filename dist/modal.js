@@ -7,6 +7,7 @@ var Modal = /** @class */ (function () {
     Modal.prototype.open = function () {
         var _this = this;
         var modal_window;
+        //ajax or ajax not, there is no try...
         switch (this.obj.target.charAt(0)) {
             case '#':
                 modal_window = document.querySelector(this.obj.target).cloneNode(true);
@@ -25,7 +26,6 @@ var Modal = /** @class */ (function () {
         }
     };
     Modal.prototype.showModal = function (modal_window) {
-        var _this = this;
         var body = document.body;
         var modal_container = document.createElement('div');
         var modal_close;
@@ -38,25 +38,32 @@ var Modal = /** @class */ (function () {
         modal_container.appendChild(modal_window);
         //모달 닫기
         modal_close = modal_window.querySelector('[data-modal="hide"]');
-        modal_close.addEventListener("click", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
-            _this.close();
-        });
-        // document.addEventListener('keydown', (event:Event) => {
+        modal_close.addEventListener("click", this.close.bind(this), false);
+        // modal_close.addEventListener("click", (event:Event) => {
         //   event.preventDefault();
+        //   event.stopPropagation();
+        //   event.stopImmediatePropagation();
         //   this.close();
-        // }, {once: true});
+        // });
+        //Esc 키를 클릭하면 모달을 닫는다.
         var self = this;
-        // Create a named function as your event handler
-        var myFunction = function (event) {
+        function escKeyDown(event) {
             if (event.keyCode === 27) {
                 self.close();
-                removeEventListener("keydown", myFunction);
+                document.removeEventListener("keydown", escKeyDown);
             }
-        };
-        addEventListener("keydown", myFunction);
+        }
+        document.addEventListener("keydown", escKeyDown);
+        // let self = this;
+        // document.onkeydown = function(event:KeyboardEvent) {
+        //   if(event.keyCode === 27) {
+        //     self.close();
+        //   }
+        // };
+        // document.addEventListener("keydown", function(event:KeyboardEvent) {
+        //   console.log('esc')
+        //   if(event.keyCode === 27) this.close.bind(this);
+        // }, {once:true});
     };
     Modal.prototype.close = function () {
         var modal_wrap = document.querySelector('.gt-modal-wrap');

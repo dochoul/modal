@@ -10,8 +10,8 @@ class Modal {
 
   private open() {
     let modal_window:HTMLElement;
-
-    switch(this.obj.target.charAt(0)) { //ajax or ajax not, there is no try...
+    //ajax or ajax not, there is no try...
+    switch(this.obj.target.charAt(0)) {
       case '#':
         modal_window = document.querySelector(this.obj.target).cloneNode(true);
         this.showModal(modal_window);
@@ -46,31 +46,35 @@ class Modal {
     
     //모달 닫기
     modal_close = <HTMLElement>modal_window.querySelector('[data-modal="hide"]');
-    modal_close.addEventListener("click", (event:Event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation()
-      this.close();
-    });
-
-    // document.addEventListener('keydown', (event:Event) => {
+    modal_close.addEventListener("click", this.close.bind(this), false);
+    // modal_close.addEventListener("click", (event:Event) => {
     //   event.preventDefault();
+    //   event.stopPropagation();
+    //   event.stopImmediatePropagation();
     //   this.close();
-    // }, {once: true});
+    // });
 
-    var self:any = this;
-    // Create a named function as your event handler
-    var myFunction = function (event:KeyboardEvent) {
+    
+    //Esc 키를 클릭하면 모달을 닫는다.
+    let self = this;
+    function escKeyDown(event:KeyboardEvent) {
       if(event.keyCode === 27) {
         self.close();
-        removeEventListener("keydown", myFunction);
+        document.removeEventListener("keydown", escKeyDown);
       }
     }
+    document.addEventListener("keydown", escKeyDown);
+    // let self = this;
+    // document.onkeydown = function(event:KeyboardEvent) {
+    //   if(event.keyCode === 27) {
+    //     self.close();
+    //   }
+    // };
 
-    addEventListener("keydown", myFunction);
-
-
-
+    // document.addEventListener("keydown", function(event:KeyboardEvent) {
+    //   console.log('esc')
+    //   if(event.keyCode === 27) this.close.bind(this);
+    // }, {once:true});
   }
 
   private close() {

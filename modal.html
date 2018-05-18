@@ -21,57 +21,10 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 .gt-panel .gt-panel-header .circles .circle-red{background-color:#fc615c;border-color:#fd504a}
 .gt-panel .gt-panel-header .circles .circle-yellow{background-color:#fec041;border-color:#f0b542}
 .gt-panel .gt-panel-header .circles .circle-green{background-color:#33c849;border-color:#1bc634}
-
-/* table */
-.gt-table {border:1px solid #ddd; font-size:12px}
-.gt-table thead tr th {padding:12px 12px; font-size:14px}
-.gt-table thead tr:first-child {border-bottom:2px solid #ccc}
-.gt-table tr th, .gt-table tr td {padding:8px 12px; border:1px solid #ddd}
-
-/* layout */
-#wrap {width:100%; height:100%; overflow:hidden}
-#header {min-height:60px; padding:16px 0; overflow:hidden; background:#2598e7}
-#container {margin-top:60px}
-#sidebar {position:fixed; border-right:1px solid #ddd; padding:1em 0; width:230px; height:100%; overflow:auto; z-index:1020}
-#contents {margin-left:230px}
-#header .logo {position:absolute}
-
-/* nav */
-.nav a {text-decoration:none}
-.nav .depth1 {margin-top:1em}
-.nav .depth1:first-child {margin-top:0}
-.nav .depth1 a {font-size:14px; text-transform:uppercase; color:#333}
-
-.nav .depth2 {overflow:hidden; margin-top:4px; margin-left:6px}
-.nav .depth2 li a {display:inline-block; color:#888; margin:4px 0 0 10px; font-size:14px}
-.nav .depth2 li:first-child a {margin-top:0}
-.nav .depth2 a:hover {color:#2589e7}
-.nav .depth2 li {overflow:hidden; white-space:nowrap; text-overflow:ellipsis}
-
-.nav .depth2 {position:relative}
-.nav .depth2:before {
-    content: '';
-    position: absolute;
-    height: calc(100% - 0.6em);
-    top: 0;
-    left: 0;
-    border-left: 1px dashed #999999;
-}
-.nav .depth2 li {position:relative}
-.nav .depth2 li:before {
-    content: '';
-    position: absolute;
-    width: 0.5em;
-    left: 0;
-    top: 60%;
-    border-bottom: 1px dashed #999999;
-}
 </style>
 <title>modal</title>
 </head>
 <body class="gt-p-50">
-
-
 
 
 <h2 class="anchor">기본 예제</h2>
@@ -84,7 +37,7 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 		</div>
 	</div>
 	<div class="gt-panel-body gt-center">
-		<button type="button" class="gt-button" id="modal-basic-btn" onclick="modal.open(this)">modal</button>
+		<button type="button" class="gt-button" id="modal-basic-btn" onclick="modal.open()">modal</button>
 	</div>
 </div>
 <script src="https://gist.github.com/gabia-frontend-dev/98017e8ac565b05cbc92b41e1eb8b163.js"></script>
@@ -101,7 +54,7 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 		</div>
 	</div>
 	<div class="gt-panel-body gt-center">
-		<button type="button" class="gt-button" onclick="ajaxModal.open(this)">ajax modal</button>
+		<button type="button" class="gt-button" onclick="ajaxModal.open()">ajax modal</button>
 	</div>
 </div>
 <script src="https://gist.github.com/gabia-frontend-dev/e45f1b2db282cc70e241e0569b0bf94f.js"></script>
@@ -120,6 +73,8 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 	</div>
 </div>
 
+<button id="test" type="button" class="gt-button">test</button>
+
 <!-- <script src="modal.js"></script> -->
 <script src="dist/modal.js"></script>
 <script>
@@ -127,16 +82,24 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 var modal = new Modal({
 	target: '#modal',
 	closed: function() {
-		console.log('1')
+		console.log('modal closed');
 	}
 });
 
 var ajaxModal = new Modal({
 	target: 'https://static.gabia.com/gtris/1.2.0/assets/ajax-modal.html',
 	closed: function() {
-		console.log('2')
+		console.log('ajax modal closed');
 	}
 });
+
+document.querySelector('#test').addEventListener('click', myFn.bind(this), false);
+
+function myFn() {
+	console.log('test...........')
+	document.querySelector('#test').removeEventListener('click', myFn, false);
+}
+
 </script>
 
 <!-- <script>
