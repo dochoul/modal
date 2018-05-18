@@ -46,26 +46,38 @@ var Modal = /** @class */ (function () {
         //   this.close();
         // });
         //Esc 키를 클릭하면 모달을 닫는다.
-        var self = this;
-        function escKeyDown(event) {
-            if (event.keyCode === 27) {
-                self.close();
-                document.removeEventListener("keydown", escKeyDown);
-            }
-        }
-        document.addEventListener("keydown", escKeyDown);
         // let self = this;
-        // document.onkeydown = function(event:KeyboardEvent) {
+        // function escKeyDown(event:KeyboardEvent) {
         //   if(event.keyCode === 27) {
         //     self.close();
+        //     document.removeEventListener("keydown", escKeyDown);
         //   }
-        // };
-        // document.addEventListener("keydown", function(event:KeyboardEvent) {
-        //   console.log('esc')
-        //   if(event.keyCode === 27) this.close.bind(this);
-        // }, {once:true});
+        // }
+        // document.addEventListener("keydown", escKeyDown);
+        //esckey press close modal
+        /* once:true가 IE에서 안된다
+        document.addEventListener('keydown', (event:KeyboardEvent) => {
+          if(event.keyCode === 27) this.close();
+        }, {once:true});
+        */
+        this.one(document, 'keydown', this.temp, this);
+    };
+    Modal.prototype.temp = function () {
+        console.log(this.obj);
+    };
+    Modal.prototype.one = function (element, eventType, callback, self) {
+        var one = function (event) {
+            try {
+                callback.call(self, event);
+            }
+            finally {
+                element.removeEventListener(eventType, one);
+            }
+        };
+        element.addEventListener(eventType, one);
     };
     Modal.prototype.close = function () {
+        console.log(this.obj);
         var modal_wrap = document.querySelector('.gt-modal-wrap');
         if (modal_wrap) {
             document.body.removeChild(modal_wrap);

@@ -74,10 +74,32 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 </div>
 
 <button id="test" type="button" class="gt-button">test</button>
+<button id="click">Click me</button>
+
 
 <!-- <script src="modal.js"></script> -->
 <script src="dist/modal.js"></script>
 <script>
+
+
+
+
+// function composeHandler(element, event, handler, ...captureArgs) {
+//   return function handlerFunc (...args) {
+//   	handler(...args);
+//     element.removeEventListener(event, handlerFunc, ...captureArgs);
+//   }
+// }
+
+// function addEventListenerOnce(element, event, handler, ...captureArgs) {
+// 	element.addEventListener(event, composeHandler(element, event, handler, ...captureArgs), ...captureArgs);
+// }
+
+
+// addEventListenerOnce(document.querySelector('#click'), 'click', (e) => alert('clicked on button ' + e.target.innerText), true)
+
+
+
 // Instantiate new modal
 var modal = new Modal({
 	target: '#modal',
