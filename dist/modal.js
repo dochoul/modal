@@ -49,7 +49,7 @@ var gtris;
             };
             //return completed event
             if (this.obj.completed)
-                return this.obj.completed(); //return closed event
+                return this.obj.completed();
         };
         modal.prototype.close = function () {
             var modal_wrap = document.querySelector('.gt-modal-wrap');

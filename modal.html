@@ -37,7 +37,7 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 		</div>
 	</div>
 	<div class="gt-panel-body gt-center">
-		<button type="button" class="gt-button" id="modal-basic-btn" onclick="modal.open()">modal</button>
+		<button id="modal-button-1" type="button" class="gt-button">modal</button>
 	</div>
 </div>
 <script src="https://gist.github.com/gabia-frontend-dev/98017e8ac565b05cbc92b41e1eb8b163.js"></script>
@@ -54,7 +54,7 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 		</div>
 	</div>
 	<div class="gt-panel-body gt-center">
-		<button type="button" class="gt-button" onclick="ajaxModal.open()">ajax modal</button>
+		<button id="modal-button-2" type="button" class="gt-button">ajax modal</button>
 	</div>
 </div>
 <script src="https://gist.github.com/gabia-frontend-dev/e45f1b2db282cc70e241e0569b0bf94f.js"></script>
@@ -73,57 +73,23 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 	</div>
 </div>
 
-<button id="test" type="button" class="gt-button">test</button>
-<button id="click">Click me</button>
 
-
-<!-- <script src="modal.js"></script> -->
 <script src="dist/modal.js"></script>
+
 <script>
-
-
-
-
-// function composeHandler(element, event, handler, ...captureArgs) {
-//   return function handlerFunc (...args) {
-//   	handler(...args);
-//     element.removeEventListener(event, handlerFunc, ...captureArgs);
-//   }
-// }
-
-// function addEventListenerOnce(element, event, handler, ...captureArgs) {
-// 	element.addEventListener(event, composeHandler(element, event, handler, ...captureArgs), ...captureArgs);
-// }
-
-
-// addEventListenerOnce(document.querySelector('#click'), 'click', (e) => alert('clicked on button ' + e.target.innerText), true)
-
-
-
-
-      
-
-// document.getElementById("test").addEventListener('click', function() {
-	
-// var event = new CustomEvent("dochoul");
-// this.dispatchEvent(event);
-// })
-
-// document.getElementById("test").addEventListener("dochoul", function (ev) {
-// 	console.log('dochoul event가')
-// });
-
-
 // Instantiate new modal
 var modal = new gtris.modal({
-	target: '#modal'
+	target: '#modal',
+	completed: function() {
+		console.log('modal completed');
+	},
+	closed: function() {
+		console.log('modal closed');
+	}
 });
-
-document.addEventListener('custombox:content:close', function() {
-  console.log('Content closed');
-});
-
-
+document.querySelector('#modal-button-1').addEventListener('click', function() {
+	modal.open();
+})
 
 var ajaxModal = new gtris.modal({
 	target: 'https://static.gabia.com/gtris/1.2.0/assets/ajax-modal.html',
@@ -134,17 +100,13 @@ var ajaxModal = new gtris.modal({
 		console.log('ajax modal closed');
 	}
 });
-
-document.querySelector('#test').addEventListener('click', myFn.bind(this), false);
-
-function myFn() {
-	console.log('test...........')
-	document.querySelector('#test').removeEventListener('click', myFn, false);
-}
-
+document.querySelector('#modal-button-2').addEventListener('click', function() {
+	ajaxModal.open();
+})
 </script>
 
-<!-- <script>
+<!-- <script src="modal.js"></script>
+<script>
 	function openModal(_target) {
 		gtris.ui.modal.open({
 			target: _target,

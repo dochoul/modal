@@ -67,7 +67,7 @@ namespace gtris {
       }
 
       //return completed event
-      if(this.obj.completed) return this.obj.completed(); //return closed event
+      if(this.obj.completed) return this.obj.completed();
     }
   
     private close() {
