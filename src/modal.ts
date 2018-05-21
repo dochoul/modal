@@ -12,7 +12,7 @@ namespace gtris {
     closed: Function;
   }
 
-  export class modal implements IModal {
+  export class modal {
 
     private obj:IObjectSchema; 
     
@@ -27,7 +27,7 @@ namespace gtris {
       switch(this.obj.target.charAt(0)) {
         case '#':
           modal_window = <HTMLElement>document.querySelector(this.obj.target);
-          this.showModal(<HTMLElement>modal_window.cloneNode(true));
+          this.show(<HTMLElement>modal_window.cloneNode(true));
           break;
         case '.':
           break;
@@ -36,13 +36,13 @@ namespace gtris {
             let div:HTMLElement = document.createElement('div');
             div.innerHTML = response;
             modal_window = <HTMLElement>div.querySelector('.gt-modal');
-            this.showModal(modal_window);
+            this.show(modal_window);
           });
           break;
       }
     }
   
-    private showModal(modal_window:HTMLElement) {
+    private show(modal_window:HTMLElement) {
       let body:HTMLElement = document.body;
       let modal_wrap:HTMLElement = document.createElement('div');
       let modal_close:HTMLElement;
@@ -60,46 +60,14 @@ namespace gtris {
       //모달 닫기
       modal_close = <HTMLElement>modal_window.querySelector('[data-modal="hide"]');
       modal_close.addEventListener("click", this.close.bind(this), false);
-      // modal_close.addEventListener("click", (event:Event) => {
-      //   event.preventDefault();
-      //   event.stopPropagation();
-      //   event.stopImmediatePropagation();
-      //   this.close();
-      // });
-  
-      
-      //Esc 키를 클릭하면 모달을 닫는다.
-      // let self = this;
-      // function escKeyDown(event:KeyboardEvent) {
-      //   if(event.keyCode === 27) {
-      //     self.close();
-      //     document.removeEventListener("keydown", escKeyDown);
-      //   }
-      // }
-      // document.addEventListener("keydown", escKeyDown);
-  
-      //esckey press close modal
-      // document.onkeydown = function(event:KeyboardEvent) {
-      //   if(event.keyCode === 27) self.close();
-      // }
 
       //esckey press close modal
       document.onkeydown = (event:KeyboardEvent) => {
         if(event.keyCode === 27) this.close();
       }
-  
-      
-  
-      /* once:true가 IE에서 안된다
-      document.addEventListener('keydown', (event:KeyboardEvent) => {
-        if(event.keyCode === 27) this.close();
-      }, {once:true});
-      */
-  
-      //this.one(document, 'keydown', this.temp, this);
 
+      //return completed event
       if(this.obj.completed) return this.obj.completed(); //return closed event
-
     }
   
     private close() {
