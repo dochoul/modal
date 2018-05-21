@@ -21,13 +21,13 @@ namespace gtris {
     }
 
     private open() {
-      let modal_window:any;
+      let modal_window:HTMLElement;
 
       //ajax or ajax not, there is no try...
       switch(this.obj.target.charAt(0)) {
         case '#':
-          modal_window = document.querySelector(this.obj.target);
-          this.showModal(modal_window.cloneNode(true));
+          modal_window = <HTMLElement>document.querySelector(this.obj.target);
+          this.showModal(<HTMLElement>modal_window.cloneNode(true));
           break;
         case '.':
           break;
