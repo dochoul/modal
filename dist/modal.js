@@ -26,6 +26,7 @@ var Modal = /** @class */ (function () {
         }
     };
     Modal.prototype.showModal = function (modal_window) {
+        var self = this;
         var body = document.body;
         var modal_container = document.createElement('div');
         var modal_close;
@@ -55,29 +56,18 @@ var Modal = /** @class */ (function () {
         // }
         // document.addEventListener("keydown", escKeyDown);
         //esckey press close modal
+        document.onkeydown = function (event) {
+            if (event.keyCode === 27)
+                self.close();
+        };
         /* once:true가 IE에서 안된다
         document.addEventListener('keydown', (event:KeyboardEvent) => {
           if(event.keyCode === 27) this.close();
         }, {once:true});
         */
-        this.one(document, 'keydown', this.temp, this);
-    };
-    Modal.prototype.temp = function () {
-        console.log(this.obj);
-    };
-    Modal.prototype.one = function (element, eventType, callback, self) {
-        var one = function (event) {
-            try {
-                callback.call(self, event);
-            }
-            finally {
-                element.removeEventListener(eventType, one);
-            }
-        };
-        element.addEventListener(eventType, one);
+        //this.one(document, 'keydown', this.temp, this);
     };
     Modal.prototype.close = function () {
-        console.log(this.obj);
         var modal_wrap = document.querySelector('.gt-modal-wrap');
         if (modal_wrap) {
             document.body.removeChild(modal_wrap);

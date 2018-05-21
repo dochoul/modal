@@ -30,6 +30,7 @@ class Modal {
   }
 
   private showModal(modal_window:HTMLElement) {
+    let self = this;
     let body:HTMLElement = document.body;
     let modal_container:HTMLElement = document.createElement('div');
     let modal_close:HTMLElement;
@@ -66,6 +67,11 @@ class Modal {
     // document.addEventListener("keydown", escKeyDown);
 
     //esckey press close modal
+    document.onkeydown = function(event:KeyboardEvent) {
+      if(event.keyCode === 27) self.close();
+    }
+
+    
 
     /* once:true가 IE에서 안된다
     document.addEventListener('keydown', (event:KeyboardEvent) => {
@@ -73,27 +79,10 @@ class Modal {
     }, {once:true});
     */
 
-    this.one(document, 'keydown', this.temp, this);
-
+    //this.one(document, 'keydown', this.temp, this);
   }
-
-  private temp() {
-    console.log(this.obj);
-  }
-
-  private one(element:any,eventType:any,callback:any,self:any) {
-    var one=function(event:any) {
-        try{
-            callback.call(self,event);
-        } finally {
-            element.removeEventListener(eventType,one);
-        }
-    }
-    element.addEventListener(eventType,one);
-}
 
   private close() {
-    console.log(this.obj)
     let modal_wrap:HTMLElement = <HTMLElement>document.querySelector('.gt-modal-wrap');
     if(modal_wrap) {
       document.body.removeChild(modal_wrap);
