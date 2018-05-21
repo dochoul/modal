@@ -43,7 +43,6 @@ namespace gtris {
     }
   
     private showModal(modal_window:HTMLElement) {
-      let self = this;
       let body:HTMLElement = document.body;
       let modal_wrap:HTMLElement = document.createElement('div');
       let modal_close:HTMLElement;
@@ -80,8 +79,13 @@ namespace gtris {
       // document.addEventListener("keydown", escKeyDown);
   
       //esckey press close modal
-      document.onkeydown = function(event:KeyboardEvent) {
-        if(event.keyCode === 27) self.close();
+      // document.onkeydown = function(event:KeyboardEvent) {
+      //   if(event.keyCode === 27) self.close();
+      // }
+
+      //esckey press close modal
+      document.onkeydown = (event:KeyboardEvent) => {
+        if(event.keyCode === 27) this.close();
       }
   
       

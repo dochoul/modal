@@ -28,7 +28,7 @@ var gtris;
             }
         };
         modal.prototype.showModal = function (modal_window) {
-            var self = this;
+            var _this = this;
             var body = document.body;
             var modal_wrap = document.createElement('div');
             var modal_close;
@@ -58,9 +58,13 @@ var gtris;
             // }
             // document.addEventListener("keydown", escKeyDown);
             //esckey press close modal
+            // document.onkeydown = function(event:KeyboardEvent) {
+            //   if(event.keyCode === 27) self.close();
+            // }
+            //esckey press close modal
             document.onkeydown = function (event) {
                 if (event.keyCode === 27)
-                    self.close();
+                    _this.close();
             };
             /* once:true가 IE에서 안된다
             document.addEventListener('keydown', (event:KeyboardEvent) => {
