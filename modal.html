@@ -101,15 +101,21 @@ h2.anchor:after {position: absolute;left:0;right: 0;content: '';bottom: -1px;hei
 
 
 // Instantiate new modal
-var modal = new Modal({
+var modal = new gtris.modal({
 	target: '#modal',
+	completed: function() {
+		console.log('modal completed');
+	},
 	closed: function() {
 		console.log('modal closed');
 	}
 });
 
-var ajaxModal = new Modal({
+var ajaxModal = new gtris.modal({
 	target: 'https://static.gabia.com/gtris/1.2.0/assets/ajax-modal.html',
+	completed: function() {
+		console.log('ajax modal completed');
+	},
 	closed: function() {
 		console.log('ajax modal closed');
 	}
